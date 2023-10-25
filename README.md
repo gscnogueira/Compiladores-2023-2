@@ -5,6 +5,6 @@ Compilador da linguagem Tiny, apresentada no livro Compiler Construction: Princi
 ## Membros do Grupo
 - Gabriel da Silva Corvino Nogueira (180113330)
 - João Antônio
-- Maria Júlia
+- Maria Júlia Marques Schettini (232046319)
 - Davi 
 
