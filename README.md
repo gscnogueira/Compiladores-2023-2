@@ -1,2 +1,10 @@
 # Compiladores-2023-2
-Repositório destinado a armazenar o trabalho desenvolvido na disciplina Compiladores (UnB)
+
+Compilador da linguagem Tiny, apresentada no livro Compiler Construction: Principles and Practice, Kenneth C. Louden 
+
+## Membros do Grupo
+- Gabriel da Silva Corvino Nogueira (180113330)
+- João Antônio
+- Maria Júlia
+- Davi 
+
