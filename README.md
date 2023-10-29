@@ -6,5 +6,5 @@ Compilador da linguagem Tiny, apresentada no livro Compiler Construction: Princi
 - Gabriel da Silva Corvino Nogueira (180113330)
 - João Antônio
 - Maria Júlia Marques Schettini (232046319)
-- Davi 
+- Davi Vasconcelos de Araujo (180015427)
 
