@@ -1,2 +1,4 @@
 *.pdf
 
+/lex.yy.c
+/tiny
