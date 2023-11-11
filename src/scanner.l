@@ -1,30 +1,51 @@
 %{
 #include <stdio.h>
+#include "parser.h"
+int yyerror(const char* s);
 %}
 
+%option yylineno
 
 digit [0-9]
 number {digit}+
 identifier [a-zA-Z_][a-zA-Z0-9_]*
-reserved_word "if"|"then"|"else"|"end"|"repeat"|"until"|"read"|"write"
 special_symbol [-*/+=<();]|":="
 white_space [\n\t ]
 
 %%
-{reserved_word} {printf("Palavra Reservada: %s\n", yytext);}
-{special_symbol} {printf("Simbolo Especial: %s\n", yytext);}
-{identifier} {printf("Identificador: %s\n", yytext);}
-{number} {printf("Numero: %s\n", yytext);}
-{white_space} {/*ignora espaços em branco*/}
-.       { printf("Token inválido: %s\n", yytext); }
+
+"if" {return IF;}
+"then" {return THEN;}
+"else" {return ELSE;}
+"end" {return END;}
+"repeat" {return REPEAT;}
+"until" {return UNTIL;}
+"read" {return READ;}
+"write" {return WRITE;}
+"+" {return PLUS;}
+"-" {return MINUS;}
+"*" {return MUL;}
+"/" {return DIV;}
+"=" {return EQUAL;}
+"<" {return LT;}
+"(" {return OP;}
+")" {return CP;}
+";" {return SC;}
+":=" {return ASSIGN;}
+{identifier} {return ID;}
+{number} {return NUM;}
+{white_space} {}
+.       {yyerror("Token inválido!"); }
 
 %%
 
-int yywrap() {
-    return 1;
-}
+;; int yywrap() {
+;;     return 1;
+;; }
 
-int main() {
-    yylex();
+int yyerror (const char* s) /* Called by yyparse on error */
+{
+	printf ("line %d:%s\n", yylineno, s);
+
     return 0;
 }
