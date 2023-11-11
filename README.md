@@ -8,3 +8,12 @@ Compilador da linguagem Tiny, apresentada no livro Compiler Construction: Princi
 - Maria Júlia Marques Schettini (232046319)
 - Davi Vasconcelos de Araujo (180015427)
 
+## Compilando
+
+    make
+
+## Executando
+
+    ./tiny < file.tny
+
+
