@@ -1,9 +1,9 @@
 read n;
 
 if 0 < n then
-   fat := 1
+   fat := 1;
    repeat
-    fat := fat * n
+    fat := fat * n;
     n := n - 1
    until n = 0;
    write fat
