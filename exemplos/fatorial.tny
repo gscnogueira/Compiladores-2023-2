@@ -1,10 +1,10 @@
 read n;
 
-if n > 0 then
+if 0 < n then
    fat := 1
    repeat
     fat := fat * n
     n := n - 1
-   until x = 0;
+   until n = 0;
    write fat
 end
