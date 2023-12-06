@@ -1,10 +1,10 @@
 %{
 #include <stdio.h>
-#include "parser.h"
-int yyerror(const char* s);
 %}
 
+%option noyywrap
 %option yylineno
+
 
 digit [0-9]
 number {digit}+
@@ -35,17 +35,9 @@ white_space [\n\t ]
 {identifier} {return ID;}
 {number} {return NUM;}
 {white_space} {}
-.       {yyerror("Token inválido!"); }
-
+.       {char msg[100];
+        sprintf(msg, "Token inválido (%s)", yytext);
+       	yyerror(msg);}
 %%
 
-;; int yywrap() {
-;;     return 1;
-;; }
 
-int yyerror (const char* s) /* Called by yyparse on error */
-{
-	printf ("line %d:%s\n", yylineno, s);
-
-    return 0;
-}

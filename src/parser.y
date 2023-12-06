@@ -3,8 +3,10 @@
 
 %{
 #include <stdio.h> 
+
 int yylex();
 int yyerror(const char* s);
+
 %}
 
 %locations
@@ -13,8 +15,6 @@ int yyerror(const char* s);
 %token ID
 %token IF THEN ELSE END REPEAT UNTIL READ WRITE
 %token MINUS MUL DIV PLUS EQUAL LT OP CP SC ASSIGN
-
-
 
 %%
 
@@ -60,11 +60,13 @@ factor: OP exp CP | NUM | ID ;
 
 %%
 
-int main () 
+extern int yylineno;
+
+int yyerror (const char* s) /* Called by yyparse on error */
 {
-	yyparse ();
+	printf ("line %d:%s\n", yylineno, s);
+
     return 0;
 }
 
-
-
+#include "scanner.c" 

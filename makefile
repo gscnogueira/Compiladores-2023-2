@@ -1,5 +1,5 @@
 compiler: scanner parser 
-	gcc -o tiny src/scanner.c src/parser.c -g
+	gcc -o tiny src/main.c src/parser.c 
 
 scanner: src/scanner.l
 	flex -o src/scanner.c src/scanner.l 
