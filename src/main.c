@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
   yyin = fopen(file_name, "r");
 
-  yyparse();
+  yyparse(yyin);
 
   fclose(yyin);
 

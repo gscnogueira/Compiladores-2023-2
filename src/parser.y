@@ -5,11 +5,12 @@
 #include <stdio.h> 
 
 int yylex();
-int yyerror(const char* s);
+int yyerror(FILE* fp, const char* s);
 
 %}
 
 %locations
+%parse-param { FILE* fp }
 
 %token NUM
 %token ID
@@ -62,11 +63,12 @@ factor: OP exp CP | NUM | ID ;
 
 extern int yylineno;
 
-int yyerror (const char* s) /* Called by yyparse on error */
+int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
 {
 	printf ("line %d:%s\n", yylineno, s);
 
     return 0;
 }
+
 
 #include "scanner.c" 

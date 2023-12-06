@@ -37,7 +37,7 @@ white_space [\n\t ]
 {white_space} {}
 .       {char msg[100];
         sprintf(msg, "Token inválido (%s)", yytext);
-       	yyerror(msg);}
+       	yyerror(yyin, msg);}
 %%
 
 
