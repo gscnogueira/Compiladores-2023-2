@@ -1,12 +1,12 @@
 #include "ast.h"
 
-ASTNode* create_node(){
-    ASTNode * t = (ASTNode*) malloc(sizeof(ASTNode));
-    t->no_linha = 10;
+TreeNode* create_node(){
+    TreeNode * t = (TreeNode*) malloc(sizeof(TreeNode));
+    t->lineno = 10;
 
     return t;
 }
 
-void delete_node(ASTNode* node){
+void delete_node(TreeNode* node){
     free(node);
 }

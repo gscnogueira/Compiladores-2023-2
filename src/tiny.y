@@ -5,7 +5,7 @@
 #include <stdio.h> 
 #include "ast.h"
 
-#define YYSTYPE ASTNode *
+#define YYSTYPE TreeNode *
 
 static ASTNode* ast_final;
 
@@ -27,11 +27,10 @@ int yyerror(FILE* fp, const char* s);
 
 /* Regras definindo a GLC "TINY" (Louden) e acoes correspondentes */
 
-program: stmt-sequence { YYSTYPE blau = create_node() ;
-                        ast_final = blau;};
+program: stmt-sequence { ast_final = $1};
 
 stmt-sequence: stmt-sequence SC statement
-             | statement ;
+               | statement { $$ = create_node()};
 
 statement: if-stmt
          | repeat-stmt

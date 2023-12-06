@@ -29,7 +29,8 @@ int main(int argc, char** argv) {
   /* Parsing (Gabriel) */
 
   /* realiza parsing do arquivo */
-  ASTNode* ast = parse(yyin);
+
+  TreeNode* ast = parse(yyin);
 
   fclose(yyin);
 
