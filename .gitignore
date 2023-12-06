@@ -1,7 +1,6 @@
 *.pdf
 *~
-/lex.yy.c
 /tiny
-/src/parser.c
-/src/parser.h
-/src/scanner.c
+/src/lex.yy.c
+/src/tiny.tab.c
+/src/tiny.tab.h

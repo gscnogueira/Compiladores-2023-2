@@ -3,9 +3,15 @@
 
 %{
 #include <stdio.h> 
+#include "ast.h"
+
+#define YYSTYPE ASTNode *
+
+static ASTNode* ast_final;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
+
 
 %}
 
@@ -21,7 +27,8 @@ int yyerror(FILE* fp, const char* s);
 
 /* Regras definindo a GLC "TINY" (Louden) e acoes correspondentes */
 
-program: stmt-sequence ;
+program: stmt-sequence { YYSTYPE blau = create_node() ;
+                        ast_final = blau;};
 
 stmt-sequence: stmt-sequence SC statement
              | statement ;
@@ -70,5 +77,9 @@ int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
     return 0;
 }
 
+ASTNode* parse(FILE * src_file){
+    yyparse(src_file);
+    return ast_final;
+}
 
-#include "scanner.c" 
+#include "lex.yy.c" 

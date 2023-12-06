@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "tiny.tab.h"
+#include "ast.h"
 #include "parser.h"
 
 extern FILE* yyin;
@@ -22,11 +24,31 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  /* --------------------------------------------- */
+
+  /* Parsing (Gabriel) */
+
   /* realiza parsing do arquivo */
-  yyparse(yyin);
+  ASTNode* ast = parse(yyin);
 
   fclose(yyin);
 
+  /* apenas teste do resultado retornado pelo parser */
+  printf("%d\n", ast->no_linha);
+
+  /* --------------------------------------------- */
+
+  /* Analise Semântica (Davi) */
+
+  /* --------------------------------------------- */
+
+  /* Geração de Código (João) */
+
+  /* --------------------------------------------- */
+
+  /* apagar espaço alocado para a AST depois de usar */
+
+  delete_node(ast);
   
   return 0;
 }
