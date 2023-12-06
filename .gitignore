@@ -1,5 +1,5 @@
 *.pdf
-
+*~
 /lex.yy.c
 /tiny
 /src/parser.c

@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  /* realiza parsing do arquivo */
   yyparse(yyin);
 
   fclose(yyin);
