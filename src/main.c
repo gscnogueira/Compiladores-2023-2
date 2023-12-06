@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "parser.h"  // Inclua o arquivo de cabeçalho gerado pelo Yacc
+#include "parser.h"
 
-extern FILE* yyin;  // Declare a variável global yyin usada pelo Flex
+extern FILE* yyin;
 
 int main(int argc, char** argv) {
 
@@ -14,6 +14,13 @@ int main(int argc, char** argv) {
   char* file_name = argv[1];
 
   yyin = fopen(file_name, "r");
+
+  if (yyin == NULL){
+    fprintf(stderr,
+	    "Arquivo %s não foi encontrado no sistema.\n",
+	    file_name);
+    return 1;
+  }
 
   yyparse(yyin);
 
