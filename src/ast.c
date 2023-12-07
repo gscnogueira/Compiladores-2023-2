@@ -94,6 +94,9 @@ void print_AST(TreeNode* node, int level){
 TreeNode* create_node(){
     TreeNode * t = (TreeNode*) malloc(sizeof(TreeNode));
     t->lineno = yylineno;
+    t->sibling = NULL;
+    for (int i = 0; i < MAXCHILDREN; i++)
+        t->child[i] = NULL;
 
     return t;
 }
@@ -188,6 +191,37 @@ TreeNode* create_repeat_node() {
     return node;
 }
 
-void delete_node(TreeNode* node){
+
+void delete_stmt_node(TreeNode *node) {
+    StmtKind kind = node->kind.stmt;
+
+    if( kind == AssignK || kind == ReadK )
+        free(node->attr.name);
+
     free(node);
+}
+
+
+void delete_exp_node(TreeNode *node) {
+    ExpKind kind = node->kind.exp;
+
+    if( kind == IdK)
+        free(node->attr.name);
+
+    free(node);
+}
+
+void delete_node(TreeNode* node){
+    if (node == NULL)
+        return;
+    for (int i = 0; i < MAXCHILDREN; i++){
+        delete_node(node->child[i]);
+  }
+
+    delete_node(node->sibling);
+
+    if (node->nodekind == StmtK)
+        delete_stmt_node(node);
+    else
+        delete_exp_node(node);
 }
