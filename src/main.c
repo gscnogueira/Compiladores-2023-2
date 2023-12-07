@@ -34,6 +34,8 @@ int main(int argc, char** argv) {
 
   fclose(yyin);
 
+  if (ast == NULL)
+    return 1;
   /* apenas teste do resultado retornado pelo parser */
   printf("%d\n", ast->lineno);
 
