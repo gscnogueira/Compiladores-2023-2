@@ -6,7 +6,7 @@
 typedef enum {StmtK,ExpK} NodeKind;
 typedef enum {IfK,RepeatK,AssignK,ReadK,WriteK} StmtKind;
 typedef enum {OpK,ConstK,IdK} ExpKind;
-typedef enum {PLUS,MINUS,MUL,DIV,LT,EQ}TokenType
+typedef enum {Plus,Minus,Mul,Div,Lt,Eq}TokenType;
 
 
 typedef enum {Void,Integer,Boolean} ExpType;

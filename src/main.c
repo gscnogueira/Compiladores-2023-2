@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
   fclose(yyin);
 
   /* apenas teste do resultado retornado pelo parser */
-  printf("%d\n", ast->no_linha);
+  printf("%d\n", ast->lineno);
 
   /* --------------------------------------------- */
 

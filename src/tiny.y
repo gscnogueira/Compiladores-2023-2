@@ -7,7 +7,7 @@
 
 #define YYSTYPE TreeNode *
 
-static ASTNode* ast_final;
+static TreeNode* ast_final;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
@@ -27,10 +27,10 @@ int yyerror(FILE* fp, const char* s);
 
 /* Regras definindo a GLC "TINY" (Louden) e acoes correspondentes */
 
-program: stmt-sequence { ast_final = $1};
+program: stmt-sequence { ast_final = $1;};
 
 stmt-sequence: stmt-sequence SC statement
-               | statement { $$ = create_node()};
+             | statement { $$ = create_node();};
 
 statement: if-stmt
          | repeat-stmt
@@ -76,7 +76,7 @@ int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
     return 0;
 }
 
-ASTNode* parse(FILE * src_file){
+TreeNode* parse(FILE * src_file){
     yyparse(src_file);
     return ast_final;
 }
