@@ -5,23 +5,29 @@
 #include <stdio.h> 
 #include "ast.h"
 
-#define YYSTYPE TreeNode *
-
 static TreeNode* ast_final;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
 
-
 %}
+
+%union {
+    unsigned number;
+    char *string;
+    struct treeNode* node;
+}
+
+%token<number> NUM
+%token<string> ID
+%token<string> IF THEN ELSE END REPEAT UNTIL READ WRITE
+%token<string> MINUS MUL DIV PLUS EQUAL LT OP CP SC ASSIGN
+
+%type<node> program statement stmt-sequence assign-stmt repeat-stmt if-stmt write-stmt read-stmt
+%type<node> exp simple-exp comparison-op term factor
 
 %locations
 %parse-param { FILE* fp }
-
-%token NUM
-%token ID
-%token IF THEN ELSE END REPEAT UNTIL READ WRITE
-%token MINUS MUL DIV PLUS EQUAL LT OP CP SC ASSIGN
 
 %%
 
@@ -30,32 +36,40 @@ int yyerror(FILE* fp, const char* s);
 program: stmt-sequence { ast_final = $1;};
 
 stmt-sequence: stmt-sequence SC statement
-             | statement { $$ = create_node();};
+             | statement 
 
-statement: if-stmt
-         | repeat-stmt
-         | assign-stmt
-         | read-stmt
-         | write-stmt
-         ;
+statement: if-stmt 
+| repeat-stmt 
+| assign-stmt 
+| read-stmt 
+| write-stmt 
+;
 
-if-stmt: IF exp THEN stmt-sequence END
-	   | IF exp THEN stmt-sequence ELSE stmt-sequence END
-       ;
+if-stmt: IF exp THEN stmt-sequence END {$$ = create_node();}
+| IF exp THEN stmt-sequence ELSE stmt-sequence END {$$ = create_node();}
+;
 
-repeat-stmt: REPEAT stmt-sequence UNTIL exp ;
+repeat-stmt: REPEAT stmt-sequence UNTIL exp {$$ = create_node();} ;
 
-assign-stmt: ID ASSIGN exp;
+assign-stmt: ID ASSIGN exp {
+  printf("%s\n", $1);
+  $$ = create_assign_node($1);
+  $$ -> child[0] = $3;
+};
 
-read-stmt: READ ID ;
+read-stmt: READ ID { $$ = create_node();};
 
-write-stmt:	WRITE exp ;
+write-stmt:	WRITE exp {$$ = create_node();};
 
-exp: simple-exp comparison-op simple-exp | simple-exp ;
+exp: simple-exp comparison-op simple-exp
+| simple-exp {$$ = create_node();}
+;
 
-comparison-op: LT | EQUAL ;
+comparison-op: LT {$$ = create_node();}
+| EQUAL {$$ = create_node();};
 
-simple-exp: simple-exp addop term | term ;
+simple-exp: simple-exp addop term {$$ = create_node();}
+| term {$$ = create_node();};
 
 addop: PLUS | MINUS ;
 
@@ -63,7 +77,10 @@ term: term mulop factor | factor ;
 
 mulop: MUL | DIV ;
 
-factor: OP exp CP | NUM | ID ;
+factor: OP exp CP {$$ = create_node();}
+| NUM {$$ = create_node();}
+| ID {$$ = create_node();}
+;
 
 %%
 

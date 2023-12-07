@@ -32,7 +32,7 @@ white_space [\n\t ]
 ")" {return CP;}
 ";" {return SC;}
 ":=" {return ASSIGN;}
-{identifier} {return ID;}
+{identifier} { yylval.string = strdup(yytext); return ID;}
 {number} {return NUM;}
 {white_space} {}
 .       {char msg[100];

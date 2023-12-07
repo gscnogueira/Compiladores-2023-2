@@ -7,6 +7,9 @@ extern FILE* yyin;
 
 int main(int argc, char** argv) {
 
+#ifdef YYDEBUG
+  yydebug = 0;
+#endif
 
   if (argc != 2){
     fprintf(stderr, "Número inválido de argumentos\n");

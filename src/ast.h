@@ -25,6 +25,8 @@ typedef struct treeNode {
 
 TreeNode* create_node();
 
+TreeNode* create_assign_node();
+
 void delete_node(TreeNode* node);
 
 #endif 
