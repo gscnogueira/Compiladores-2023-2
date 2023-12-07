@@ -33,7 +33,7 @@ white_space [\n\t ]
 ";" {return SC;}
 ":=" {return ASSIGN;}
 {identifier} { yylval.string = strdup(yytext); return ID;}
-{number} {return NUM;}
+{number} {yylval.number = atoi(yytext); return NUM;}
 {white_space} {}
 .       {char msg[100];
         sprintf(msg, "Token inválido (%s)", yytext);

@@ -40,7 +40,8 @@ int main(int argc, char** argv) {
   if (ast == NULL)
     return 1;
   /* apenas teste do resultado retornado pelo parser */
-  printf("%d\n", ast->lineno);
+  printf("variável: %s\n", ast->attr.name);
+  printf("Exprecao: %d\n", ast->child[0]->attr.val);
 
   /* --------------------------------------------- */
 

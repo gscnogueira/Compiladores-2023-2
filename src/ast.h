@@ -27,6 +27,8 @@ TreeNode* create_node();
 
 TreeNode* create_assign_node();
 
+TreeNode* create_const_node();
+
 void delete_node(TreeNode* node);
 
 #endif 

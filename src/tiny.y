@@ -13,7 +13,7 @@ int yyerror(FILE* fp, const char* s);
 %}
 
 %union {
-    unsigned number;
+    int number;
     char *string;
     struct treeNode* node;
 }
@@ -62,14 +62,16 @@ read-stmt: READ ID { $$ = create_node();};
 write-stmt:	WRITE exp {$$ = create_node();};
 
 exp: simple-exp comparison-op simple-exp
-| simple-exp {$$ = create_node();}
+| simple-exp
 ;
 
 comparison-op: LT {$$ = create_node();}
-| EQUAL {$$ = create_node();};
+| EQUAL {$$ = create_node();}
+;
 
 simple-exp: simple-exp addop term {$$ = create_node();}
-| term {$$ = create_node();};
+| term
+;
 
 addop: PLUS | MINUS ;
 
@@ -78,7 +80,7 @@ term: term mulop factor | factor ;
 mulop: MUL | DIV ;
 
 factor: OP exp CP {$$ = create_node();}
-| NUM {$$ = create_node();}
+| NUM {$$ = create_const_node($1);}
 | ID {$$ = create_node();}
 ;
 
