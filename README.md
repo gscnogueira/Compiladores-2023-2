@@ -14,6 +14,6 @@ Compilador da linguagem Tiny, apresentada no livro Compiler Construction: Princi
 
 ## Executando
 
-    ./tiny < file.tny
+    ./tiny file.tny
 
 
