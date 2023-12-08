@@ -79,6 +79,7 @@ void print_AST(TreeNode* node, int level){
         return;
     
     printf("------------LEVEL %d---------------\n", level);
+    printf("linha: %d\n", node->lineno);
     if (node->nodekind == ExpK)
         print_exp_node(node);
     else 

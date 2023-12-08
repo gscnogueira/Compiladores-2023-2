@@ -6,6 +6,7 @@
 #include "ast.h"
 
 static TreeNode* ast_final;
+extern int yylineno;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
@@ -120,13 +121,13 @@ mulop: MUL {$$ = create_op_node(Mul);}
 ;
 
 factor: OP exp CP {$$ = $2;}
-| NUM {$$ = create_const_node($1);}
+| NUM {
+    $$ = create_const_node($1);}
 | ID {$$ = create_id_node($1);}
 ;
 
 %%
 
-extern int yylineno;
 
 int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
 {
