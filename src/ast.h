@@ -27,7 +27,7 @@ typedef struct treeNode {
 
 TreeNode* create_node();
 
-void delete_node(TreeNode* node);
+void delete_AST(TreeNode* node);
 
 /* statement nodes */
 

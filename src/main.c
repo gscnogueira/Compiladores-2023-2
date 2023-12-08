@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 
   /* apagar espaço alocado para a AST depois de usar */
 
-  delete_node(ast);
+  delete_AST(ast);
   
   return 0;
 }

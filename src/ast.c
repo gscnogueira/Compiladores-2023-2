@@ -211,14 +211,14 @@ void delete_exp_node(TreeNode *node) {
     free(node);
 }
 
-void delete_node(TreeNode* node){
+void delete_AST(TreeNode* node){
     if (node == NULL)
         return;
     for (int i = 0; i < MAXCHILDREN; i++){
-        delete_node(node->child[i]);
+        delete_AST(node->child[i]);
   }
 
-    delete_node(node->sibling);
+    delete_AST(node->sibling);
 
     if (node->nodekind == StmtK)
         delete_stmt_node(node);
