@@ -2,8 +2,22 @@
 #include "tiny.tab.h"
 #include "ast.h"
 #include "parser.h"
+#include "symtab.h"
+#include "analyze.h"
+#include "globals.h"
+
+extern int EchoSource;
+extern int TraceScan;
+extern int TraceParse;
+extern int TraceAnalyze;
+extern int TraceCode;
+extern int Error;
+
 
 extern FILE* yyin;
+FILE * listing;
+int TraceAnalyze = 1;
+int Error = 0;
 
 int main(int argc, char** argv) {
 
@@ -45,6 +59,10 @@ int main(int argc, char** argv) {
   /* --------------------------------------------- */
 
   /* Analise Semântica (Davi) */
+  listing = stdout;
+  buildSymtab(ast);
+
+  typeCheck(ast);
 
   /* --------------------------------------------- */
 

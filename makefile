@@ -1,5 +1,5 @@
 compiler: scanner parser 
-	gcc -o tiny src/main.c src/tiny.tab.c src/ast.c  -g
+	gcc -o tiny src/main.c src/tiny.tab.c src/ast.c src/symtab.c src/analyze.c  -g
 
 
 scanner: src/tiny.l
