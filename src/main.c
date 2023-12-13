@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
   if (ast == NULL)
     return 1;
 
-  print_AST(ast, 0);
+  /* print_AST(ast, 0); */
 
   /* --------------------------------------------- */
 

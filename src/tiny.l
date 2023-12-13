@@ -1,16 +1,15 @@
 %{
 #include <stdio.h>
+int line_no = 1 ;
 %}
 
 %option noyywrap
-%option yylineno
 
 
 digit [0-9]
 number {digit}+
 identifier [a-zA-Z_][a-zA-Z0-9_]*
-special_symbol [-*/+=<();]|":="
-white_space [\n\t ]
+white_space [ \t]+
 
 %%
 
@@ -35,6 +34,7 @@ white_space [\n\t ]
 {identifier} { yylval.string = strdup(yytext); return ID;}
 {number} {yylval.number = atoi(yytext); return NUM;}
 {white_space} {}
+"\n" {line_no++;}
 .       {char msg[100];
         sprintf(msg, "Token inválido (%s)", yytext);
        	yyerror(yyin, msg);}

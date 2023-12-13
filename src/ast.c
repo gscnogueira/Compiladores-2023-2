@@ -1,7 +1,7 @@
 #include "ast.h"
 #include <stdio.h>
 
-extern int yylineno;
+extern int line_no;
 extern char* yytext;
 
 void print_stmt_node(TreeNode* node){
@@ -94,7 +94,7 @@ void print_AST(TreeNode* node, int level){
 
 TreeNode* create_node(){
     TreeNode * t = (TreeNode*) malloc(sizeof(TreeNode));
-    t->lineno = yylineno;
+    t->lineno = line_no;
     t->sibling = NULL;
     for (int i = 0; i < MAXCHILDREN; i++)
         t->child[i] = NULL;

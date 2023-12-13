@@ -6,7 +6,7 @@
 #include "ast.h"
 
 static TreeNode* ast_final;
-extern int yylineno;
+extern int line_no;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
@@ -38,12 +38,19 @@ program: stmt-sequence { ast_final = $1;};
 
 stmt-sequence: stmt-sequence SC statement {
     TreeNode* current_stmt = $1;
-    current_stmt = $1;
-    while (current_stmt->sibling != NULL){
-        current_stmt = current_stmt->sibling;
+
+    if (current_stmt != NULL){
+        current_stmt = $1;
+
+        while (current_stmt->sibling != NULL){
+            current_stmt = current_stmt->sibling;
+        }
+        current_stmt->sibling = $3;
+        $$ = $1;
     }
-    current_stmt->sibling = $3;
-    $$ = $1;
+
+    else $$ = $3;
+
  }
 | statement
 ;
@@ -74,6 +81,7 @@ repeat-stmt: REPEAT stmt-sequence UNTIL exp {
 
 assign-stmt: ID ASSIGN exp {
     $$ = create_assign_node($1);
+    $$->lineno = $3->lineno;
     $$->child[0] = $3;
 };
 
@@ -131,7 +139,7 @@ factor: OP exp CP {$$ = $2;}
 
 int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
 {
-	printf ("line %d:%s\n", yylineno, s);
+	printf ("line %d:%s\n", line_no, s);
 
     return 0;
 }
