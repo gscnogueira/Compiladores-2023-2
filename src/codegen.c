@@ -5,6 +5,8 @@
 #include "tiny.tab.h"
 #include "codegen.h"
 
+static int deslocamentoTemp = 0;
+
 
 void generateCode(TreeNode * tree){
     // Início do arquivo
@@ -57,6 +59,42 @@ void genExpression(TreeNode * node){
 
 void gen_const_exp(TreeNode *node) {
     emitRM("LDC", ac,node->attr.val,0);
+}
+
+void gen_op_exp(TreeNode *node) {
+    genExpression(node->child[0]);              // ac = child[0]
+    emitRM("ST",ac,deslocamentoTemp--,mp_reg);  // mem[0] = child[0]
+    genExpression(node->child[1]);              // ac = child[1]
+    emitRM("LD", ac1,++deslocamentoTemp,mp_reg);// ac1 = mem[0]
+    // ac = child[1], ac1 = child[0] 
+    switch(node->attr.op){
+        case(Plus):
+            emitRO("ADD",ac,ac1,ac);
+            break;
+        case(Minus):
+            emitRO("SUB",ac,ac1,ac);
+            break;
+        case(Mul):
+            emitRO("MUL",ac,ac1,ac);
+            break;
+        case(Div):
+            emitRO("DIV",ac,ac1,ac);
+            break;
+        case(Lt):
+            emitRO("SUB",ac,ac1,ac);
+            emitRM("JLT",ac,2,pc_reg);
+            emitRM("LDC",ac,0,0);
+            emitRM("LDA",pc_reg,1,pc_reg);
+            emitRM("LDC",ac,1,0);
+            break;
+        case(Eq):
+            emitRO("SUB",ac,ac1,ac);
+            emitRM("JEQ",ac,2,pc_reg);
+            emitRM("LDC",ac,0,0);
+            emitRM("LDA",pc_reg,1,pc_reg);
+            emitRM("LDC",ac,1,0);
+            break;
+    }
 }
 
 
