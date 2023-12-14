@@ -5,3 +5,4 @@
 /src/tiny.tab.c
 /src/tiny.tab.h
 *.tm
+/tm

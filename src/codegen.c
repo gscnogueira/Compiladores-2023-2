@@ -18,8 +18,6 @@ void genCode(TreeNode * node){
 void generateCode(TreeNode * tree){
     // Início do arquivo
 
-    fprintf(output_file, "ASSEMBLY LEGAL\n");
-
     /* genCode(tree); */
     emitRO("IN", 1,0,0,"read input");
     emitRO("OUT", 2,0,0,"std output");
