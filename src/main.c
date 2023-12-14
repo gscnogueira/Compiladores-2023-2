@@ -6,6 +6,7 @@
 #include "analyze.h"
 #include "globals.h"
 #include "codegen.h"
+#include "utils.h"
 
 extern int EchoSource;
 extern int TraceScan;
@@ -33,14 +34,14 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  char* file_name = argv[1];
+  char* input_file_name = argv[1];
 
-  yyin = fopen(file_name, "r");
+  yyin = fopen(input_file_name, "r");
 
   if (yyin == NULL){
     fprintf(stderr,
 	    "Arquivo %s não foi encontrado no sistema.\n",
-	    file_name);
+	    input_file_name);
     return 1;
   }
 
@@ -71,7 +72,9 @@ int main(int argc, char** argv) {
 
   /* Geração de Código (João) */
 
-  output_file = fopen("out.tm", "w");
+  const char* output_file_name = get_output_file_name(input_file_name);
+
+  output_file = fopen(output_file_name, "w");
 
   generateCode(ast);
 
