@@ -5,6 +5,7 @@
 #include "symtab.h"
 #include "analyze.h"
 #include "globals.h"
+#include "codegen.h"
 
 extern int EchoSource;
 extern int TraceScan;
@@ -15,7 +16,9 @@ extern int Error;
 
 
 extern FILE* yyin;
+
 FILE * listing;
+FILE * output_file;
 int TraceAnalyze = 1;
 int Error = 0;
 
@@ -67,6 +70,12 @@ int main(int argc, char** argv) {
   /* --------------------------------------------- */
 
   /* Geração de Código (João) */
+
+  output_file = fopen("out.tm", "w");
+
+  generateCode(ast);
+
+  fclose(output_file);
 
   /* --------------------------------------------- */
 

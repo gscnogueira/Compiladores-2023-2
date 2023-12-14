@@ -4,3 +4,4 @@
 /src/lex.yy.c
 /src/tiny.tab.c
 /src/tiny.tab.h
+*.tm

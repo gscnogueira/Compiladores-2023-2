@@ -1,23 +1,25 @@
 #include <stdio.h>
 #include "ast.h"
-#include "emit.h"
+#include "send.h"
+#include "globals.h"
+
 
 void genCode(TreeNode * node){
-    if (node != NULL) {
-        int i = 0;
-        genCode(node->child[i])
-        if (node -> nodekind == StmtK) {
-            genStatement(node);
-        } else if (node -> nodekind == ExpK){
-            genExpression(node);
-        }
-        genCode(node->sibling);
-    }
+/*     if (node != NULL) { */
+/*         if (node -> nodekind == StmtK) { */
+/*             genStatement(node); */
+/*         } else if (node -> nodekind == ExpK){ */
+/*             genExpression(node); */
+/*         } */
+/*         genCode(node->sibling); */
+/*     } */
 }
 
-void generateCode(FILE * intCode, TreeNode * tree){
+void generateCode(TreeNode * tree){
     // Início do arquivo
-    genCode(tree);
-    emitCmmt("Fim da execução");
-    emitRO("HALT",0,0,0,"");
+
+    fprintf(output_file, "ASSEMBLY LEGAL\n");
+
+    /* genCode(tree); */
+    /* sendRO("HALT",0,0,0,""); */
 }
