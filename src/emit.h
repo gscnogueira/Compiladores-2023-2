@@ -1,5 +1,5 @@
-#ifndef _SEND_H_
-#define _SEND_H_
+#ifndef _EMIT_H_
+#define _EMIT_H_
 
 /*
 ARQUITETURA TARGET MACHINE
@@ -15,13 +15,13 @@ REG5 = GLOBAL POINTER
 #define gp 5
 
 // Envia instrução do tipo RO
-void sendRO(char* op, int r, int s, int t);
+void emitRO(char* op, int r, int s, int t);
 
 // Envia instrução do tipo RM
-void sendRM(char* op, int r, int d, int s);
+void emitRM(char* op, int r, int d, int s);
 
 // Envia comentário
-void sendCmmt(char* c);
+void emitCmmt(char* c);
 
 /*
 
