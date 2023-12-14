@@ -6,3 +6,4 @@
 /src/tiny.tab.h
 *.tm
 /tm
+/tiny_machine

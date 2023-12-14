@@ -11,14 +11,20 @@ REG5 = GLOBAL POINTER
 */
 
 #define pc_reg 7
+
 #define mp_reg 6
+
 #define gp_reg 5
 
+#define ac 0
+
+#define ac1 1
+
 // Envia instrução do tipo RO
-void emitRO(char* op, int reg_r, int reg_s, int reg_t, char* comment);
+void emitRO(char* op, int reg_r, int reg_s, int reg_t);
 
 // Envia instrução do tipo RM
-void emitRM(char* op, int reg_r, int reg_d, int reg_s, char* comment);
+void emitRM(char* op, int reg_r, int reg_d, int reg_s);
 
 // Envia comentário
 void emitComment(char* comment);
