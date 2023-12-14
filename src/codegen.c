@@ -56,7 +56,6 @@ void genExpression(TreeNode * node){
     }
 }
 
-
 void gen_const_exp(TreeNode *node) {
     emitRM("LDC", ac,node->attr.val,0);
 }
@@ -97,6 +96,9 @@ void gen_op_exp(TreeNode *node) {
     }
 }
 
+void gen_id_exp(TreeNode *node){
+    return;
+}
 
 void gen_write_stmt(TreeNode *node) {
         genExpression(node->child[0]);
