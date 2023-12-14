@@ -4,4 +4,7 @@
 extern int TraceAnalyze;
 
 extern int Error; 
+
+extern FILE* output_file;
+
 #endif
