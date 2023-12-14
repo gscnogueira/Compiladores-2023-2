@@ -10,18 +10,18 @@ REG6 = MEMORY POINTER
 REG5 = GLOBAL POINTER
 */
 
-#define pc 7
-#define mp 6
-#define gp 5
+#define pc_reg 7
+#define mp_reg 6
+#define gp_reg 5
 
 // Envia instrução do tipo RO
-void emitRO(char* op, int r, int s, int t);
+void emitRO(char* op, int reg_r, int reg_s, int reg_t, char* comment);
 
 // Envia instrução do tipo RM
-void emitRM(char* op, int r, int d, int s);
+void emitRM(char* op, int reg_r, int reg_d, int reg_s, char* comment);
 
 // Envia comentário
-void emitCmmt(char* c);
+void emitComment(char* comment);
 
 /*
 

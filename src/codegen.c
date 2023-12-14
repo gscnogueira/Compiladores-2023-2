@@ -4,6 +4,8 @@
 
 void genCode(TreeNode * node){
     if (node != NULL) {
+        int i = 0;
+        genCode(node->child[i])
         if (node -> nodekind == StmtK) {
             genStatement(node);
         } else if (node -> nodekind == ExpK){
@@ -16,6 +18,6 @@ void genCode(TreeNode * node){
 void generateCode(FILE * intCode, TreeNode * tree){
     // Início do arquivo
     genCode(tree);
-    sendCmmt("Fim da execução");
-    sendRO("HALT",0,0,0,"");
+    emitCmmt("Fim da execução");
+    emitRO("HALT",0,0,0,"");
 }
