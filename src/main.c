@@ -20,7 +20,7 @@ extern FILE* yyin;
 
 FILE * listing;
 FILE * output_file;
-int TraceAnalyze = 1;
+int TraceAnalyze = 0;
 int Error = 0;
 
 int main(int argc, char** argv) {
@@ -72,13 +72,17 @@ int main(int argc, char** argv) {
 
   /* Geração de Código (João) */
 
-  const char* output_file_name = get_output_file_name(input_file_name);
 
-  output_file = fopen(output_file_name, "w");
+  if (Error == 0){
 
-  generateCode(ast);
+      const char* output_file_name = get_output_file_name(input_file_name);
 
-  fclose(output_file);
+      output_file = fopen(output_file_name, "w");
+
+      generateCode(ast);
+
+      fclose(output_file);
+  }
 
   /* --------------------------------------------- */
 
@@ -86,5 +90,5 @@ int main(int argc, char** argv) {
 
   delete_AST(ast);
   
-  return 0;
+  return Error;
 }

@@ -7,6 +7,7 @@
 
 static TreeNode* ast_final;
 extern int line_no;
+extern int Error;
 
 int yylex();
 int yyerror(FILE* fp, const char* s);
@@ -139,8 +140,9 @@ factor: OP exp CP {$$ = $2;}
 
 int yyerror (FILE* fp, const char* s) /* Called by yyparse on error */
 {
-	printf ("line %d:%s\n", line_no, s);
 
+    Error = 1;
+	printf ("line %d:%s\n", line_no, s);
     return 0;
 }
 

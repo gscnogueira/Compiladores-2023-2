@@ -1,7 +1,0 @@
-read x;
-write x;
-
-read y;
-write y;
-
-write (x + y)/2
