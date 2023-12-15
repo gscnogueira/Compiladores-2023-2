@@ -4,7 +4,7 @@ if x < 6 then
     repeat
         write x;
         x := x - 1
-    until x = 0;
+    until x = 0
 else
     write x;
     x := x + 1;
