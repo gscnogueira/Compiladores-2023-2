@@ -8,4 +8,4 @@ else
     write 0
 end;
 
-write z
+write z + x + y
