@@ -1,4 +1,4 @@
 write 2 + 2;
 write 4;
 write 13;
-write 1989
+write 1989 * 2

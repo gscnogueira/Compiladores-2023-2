@@ -5,7 +5,7 @@
 #include "tiny.tab.h"
 #include "codegen.h"
 
-static int deslocamentoTemp = 0;
+static int tempOffset = 0;
 
 
 void generateCode(TreeNode * tree){
@@ -62,9 +62,9 @@ void gen_const_exp(TreeNode *node) {
 
 void gen_op_exp(TreeNode *node) {
     genExpression(node->child[0]);              // ac = child[0]
-    emitRM("ST",ac,deslocamentoTemp--,mp_reg);  // mem[0] = child[0]
+    emitRM("ST",ac,tempOffset--,mp_reg);  // mem[0] = child[0]
     genExpression(node->child[1]);              // ac = child[1]
-    emitRM("LD", ac1,++deslocamentoTemp,mp_reg);// ac1 = mem[0]
+    emitRM("LD", ac1,++tempOffset,mp_reg);// ac1 = mem[0]
     // ac = child[1], ac1 = child[0] 
     switch(node->attr.op){
         case(Plus):

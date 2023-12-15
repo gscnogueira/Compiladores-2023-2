@@ -4,10 +4,10 @@
 // current code line
 static int line = 0;
 
-/*
-highest line emitted
+
+// highest line emitted
 static int highestLine = 0;
-*/
+
 
 /* emitRO: emite uma instrucao do tipo Register-Only
     (todos os operadores sao registradores)
@@ -35,4 +35,20 @@ void emitRM(char* op, int reg_r, int reg_d, int reg_s){
 
 void emitComment(char* comment){
     if (TraceAnalyze) {fprintf(output_file, "*%s\n", comment);}
+}
+
+int emitSkip(int num) {
+    int i = line;
+    line = line + num;
+    if (highestLine < line) highestLine = line;
+    return i;
+}
+
+int emitBack(int skipped) {
+    if (skipped > highestLine) emitComment("Invalid backup");
+    highestLine = line;
+} 
+
+void emitRestore() {
+    line = highestLine;
 }

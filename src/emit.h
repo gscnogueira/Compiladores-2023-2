@@ -29,6 +29,12 @@ void emitRM(char* op, int reg_r, int reg_d, int reg_s);
 // Envia comentário
 void emitComment(char* comment);
 
+int emitSkip(int num);
+
+int emitBack(int num);
+
+void emitRestore();
+
 /*
 
 Instruções RO
