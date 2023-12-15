@@ -165,11 +165,11 @@ void gen_if_stmt(TreeNode *node) {
 
     start_if = emitSkip(1);
 
-    genStatement(if_part);
+    genCode(if_part);
 
     end_if = emitSkip(else_part? 1 : 0);
 
-    genStatement(else_part);
+    genCode(else_part);
 
     end_else = emitSkip(0);
 
@@ -190,5 +190,20 @@ void gen_if_stmt(TreeNode *node) {
 
 void gen_repeat_stmt(TreeNode *node) {
     
+    TreeNode *condicao, *stmts;
+
+    stmts = node->child[0];
+    condicao = node->child[1];
+
+    int start_repeat = emitSkip(0);
+
+    genCode(stmts);
+
+    genExpression(condicao);
+
+    int end_repeat = emitSkip(0);
+
+    emitRM("JEQ",ac, start_repeat - (end_repeat + 1), pc_reg);
+
 }
 
