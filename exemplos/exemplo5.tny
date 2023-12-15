@@ -4,10 +4,10 @@ if x < 30 then
    write 0
 else
     if 30 < x then
-       write 0
+       write 2
     else
         write 1
     end
 end;
 
-write x*2
+write 666
