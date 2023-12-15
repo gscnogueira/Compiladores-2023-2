@@ -1,6 +1,8 @@
-read n;
+{Exemplo de Fatorial em TINY}
 
-if 0 < n then
+read n; {Leitura de valor da entrada}
+
+if 0 < n then 
    fat := 1;
    repeat
     fat := fat * n;

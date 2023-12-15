@@ -35,6 +35,12 @@ white_space [ \t]+
 {number} {yylval.number = atoi(yytext); return NUM;}
 {white_space} {}
 "\n" {line_no++;}
+"{" { char c;
+      do { c = input();
+           if (c == EOF) break;
+           if (c == '\n') line_no++;
+      } while (c != '}');
+    }
 .       {char msg[100];
         sprintf(msg, "Token inválido (%s)", yytext);
        	yyerror(yyin, msg);}
