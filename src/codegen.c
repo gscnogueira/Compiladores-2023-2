@@ -33,6 +33,9 @@ void genCode(TreeNode * node){
 }
 
 void genStatement(TreeNode * node){
+
+    if (node == NULL) return;
+
     switch (node->kind.stmt){
     case ReadK:
         gen_read_stmt(node);
@@ -55,6 +58,9 @@ void genStatement(TreeNode * node){
 }
 
 void genExpression(TreeNode * node){
+
+    if (node == NULL) return;
+
     switch (node->kind.exp){
     case(ConstK):
         gen_const_exp(node);
@@ -148,37 +154,37 @@ void gen_read_stmt(TreeNode *node) {
 void gen_if_stmt(TreeNode *node) {
     
     TreeNode *condicao, *if_part, *else_part;
+    int start_if,end_if, start_else, end_else;
 
     condicao = node->child[0];
     if_part = node->child[1];
     else_part = node->child[2];
 
-    /* emitRM("MEMES",ac,0, 0); */
+    // armazena valor da condição em ac;
     genExpression(condicao);
 
-    // armazena valor da condição em ac;
-
-    int loc_jeq = emitSkip(1);
+    start_if = emitSkip(1);
 
     genStatement(if_part);
 
-    // pula o else se o if for realizado
-
-    int loc_end_if = emitSkip(1);
-    int loc_start_else = emitSkip(0);
-
-    emitBack(loc_jeq);
-
-    emitRM("JEQ",ac, loc_start_else - loc_jeq, pc_reg);
-
-    emitRestore();
+    end_if = emitSkip(else_part? 1 : 0);
 
     genStatement(else_part);
 
-    int loc_end_else = emitSkip(0);
-    emitBack(loc_end_if);
+    end_else = emitSkip(0);
 
-    emitRM("LDC",pc_reg, loc_end_else+1, 0);
+    emitBack(start_if);
+
+    if(else_part == NULL) {
+        emitRM("JEQ",ac, end_if - (start_if+1), pc_reg);
+    }
+    else {
+        emitRM("JEQ",ac, end_if - (start_if), pc_reg);
+        emitBack(end_if);
+        emitRM("LDC",pc_reg, end_else+1, 0);
+    }
+
+    emitRestore();
 
 }
 
