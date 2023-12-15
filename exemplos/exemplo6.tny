@@ -1,0 +1,16 @@
+read x;
+
+if x < 6 then
+    repeat
+        write x;
+        x := x - 1
+    until x = 0;
+else
+    write x;
+    x := x + 1;
+    write x;
+    x := x + 2;
+    write x
+end;
+
+write 666
