@@ -181,7 +181,7 @@ void gen_if_stmt(TreeNode *node) {
     else {
         emitRM("JEQ",ac, end_if - (start_if), pc_reg);
         emitBack(end_if);
-        emitRM("LDC",pc_reg, end_else+1, 0);
+        emitRM("LDC",pc_reg, end_else, 0);
     }
 
     emitRestore();
