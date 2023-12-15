@@ -15,5 +15,7 @@ void gen_id_exp(TreeNode * node);
 
 /* STMTS */
 void gen_write_stmt(TreeNode * node);
+void gen_assign_stmt(TreeNode * node);
+void gen_read_stmt(TreeNode * node);
 
 #endif

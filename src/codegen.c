@@ -2,6 +2,7 @@
 #include "ast.h"
 #include "emit.h"
 #include "globals.h"
+#include "symtab.h"
 #include "tiny.tab.h"
 #include "codegen.h"
 
@@ -33,9 +34,14 @@ void genCode(TreeNode * node){
 
 void genStatement(TreeNode * node){
     switch (node->kind.stmt){
+    case ReadK:
+        gen_read_stmt(node);
+        break;
     case WriteK:
         gen_write_stmt(node);
         break;
+    case AssignK:
+        gen_assign_stmt(node);
     default:
         break;
     }
@@ -45,6 +51,7 @@ void genExpression(TreeNode * node){
     switch (node->kind.exp){
     case(ConstK):
         gen_const_exp(node);
+        break;
     case(IdK):
         gen_id_exp(node);
         break;
@@ -96,11 +103,37 @@ void gen_op_exp(TreeNode *node) {
     }
 }
 
-void gen_id_exp(TreeNode *node){
-    return;
+
+void gen_id_exp(TreeNode *node) {
+
+    int id_loc = st_lookup(node->attr.name);
+
+    emitRM("LD", ac,id_loc,gp_reg);
 }
 
 void gen_write_stmt(TreeNode *node) {
         genExpression(node->child[0]);
         emitRO("OUT", ac, 0, 0);
+}
+
+
+void gen_assign_stmt(TreeNode *node) {
+
+    char * id = node->attr.name;
+    int id_loc = st_lookup(id);
+
+    genExpression(node->child[0]);
+
+    emitRM("ST", ac, id_loc, gp_reg);
+}
+
+void gen_read_stmt(TreeNode *node) {
+
+    char * id = node->attr.name;
+    int id_loc = st_lookup(id);
+
+    emitRO("IN", ac, 0, 0);
+
+    emitRM("ST", ac, id_loc, gp_reg);
+
 }
