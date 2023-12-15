@@ -17,5 +17,7 @@ void gen_id_exp(TreeNode * node);
 void gen_write_stmt(TreeNode * node);
 void gen_assign_stmt(TreeNode * node);
 void gen_read_stmt(TreeNode * node);
+void gen_if_stmt(TreeNode * node);
+void gen_repeat_stmt(TreeNode * node);
 
 #endif

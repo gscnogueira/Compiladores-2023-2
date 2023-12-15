@@ -31,7 +31,7 @@ void emitComment(char* comment);
 
 int emitSkip(int num);
 
-int emitBack(int num);
+void emitBack(int num);
 
 void emitRestore();
 

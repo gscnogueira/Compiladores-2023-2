@@ -44,9 +44,9 @@ int emitSkip(int num) {
     return i;
 }
 
-int emitBack(int skipped) {
+void emitBack(int skipped) {
     if (skipped > highestLine) emitComment("Invalid backup");
-    highestLine = line;
+    line = skipped;
 } 
 
 void emitRestore() {

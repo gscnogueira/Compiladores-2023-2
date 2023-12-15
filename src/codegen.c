@@ -42,6 +42,13 @@ void genStatement(TreeNode * node){
         break;
     case AssignK:
         gen_assign_stmt(node);
+        break;
+    case IfK:
+        gen_if_stmt(node);
+        break;
+    case RepeatK:
+        gen_repeat_stmt(node);
+        break;
     default:
         break;
     }
@@ -137,3 +144,45 @@ void gen_read_stmt(TreeNode *node) {
     emitRM("ST", ac, id_loc, gp_reg);
 
 }
+
+void gen_if_stmt(TreeNode *node) {
+    
+    TreeNode *condicao, *if_part, *else_part;
+
+    condicao = node->child[0];
+    if_part = node->child[1];
+    else_part = node->child[2];
+
+    /* emitRM("MEMES",ac,0, 0); */
+    genExpression(condicao);
+
+    // armazena valor da condição em ac;
+
+    int loc_jeq = emitSkip(1);
+
+    genStatement(if_part);
+
+    // pula o else se o if for realizado
+
+    int loc_end_if = emitSkip(1);
+    int loc_start_else = emitSkip(0);
+
+    emitBack(loc_jeq);
+
+    emitRM("JEQ",ac, loc_start_else - loc_jeq, pc_reg);
+
+    emitRestore();
+
+    genStatement(else_part);
+
+    int loc_end_else = emitSkip(0);
+    emitBack(loc_end_if);
+
+    emitRM("LDC",pc_reg, loc_end_else+1, 0);
+
+}
+
+void gen_repeat_stmt(TreeNode *node) {
+    
+}
+
