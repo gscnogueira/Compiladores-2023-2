@@ -47,8 +47,10 @@ static void checkNode(TreeNode *node)
         if (node->kind.exp == OpK)
         {
             if ((node->child[0]->type != Integer) ||
-                (node->child[1]->type != Integer))
+                (node->child[1]->type != Integer)){
                 printf("Erro na linha %d: Op aplicada a nao inteiro\n", node->lineno);
+                Error = 1;
+            }
 
             if ((node->attr.op == Eq) || (node->attr.op == Lt))
                 node->type = Boolean;
@@ -59,21 +61,30 @@ static void checkNode(TreeNode *node)
         {
             printf("Erro na linha %d: Variavel %s utilizada porem nao declarada\n", node->lineno, node->attr.name);
             node->type = Integer;
+            Error = 1;
         }
     }
     else if (node->nodekind == StmtK)
     {
-        if (node->kind.stmt == IfK && node->child[0]->type == Integer)
+        if (node->kind.stmt == IfK && node->child[0]->type == Integer){
             printf("Erro na linha %d: Teste if nao booleano\n", node->child[0]->lineno);
-
-        else if (node->kind.stmt == AssignK && node->child[0]->type != Integer)
+            Error = 1;
+        }
+        else if (node->kind.stmt == AssignK && node->child[0]->type != Integer){
             printf("Erro na linha %d: Assignment de valor nao inteiro\n", node->child[0]->lineno);
+            Error = 1;
+        }
 
-        else if (node->kind.stmt == WriteK && node->child[0]->type != Integer)
+        else if (node->kind.stmt == WriteK && node->child[0]->type != Integer){
             printf("Erro na linha %d: Write de valor nao inteiro\n", node->child[0]->lineno);
+            Error = 1;
+        }
 
-        else if (node->kind.stmt == RepeatK && node->child[1]->type == Integer)
+        else if (node->kind.stmt == RepeatK && node->child[1]->type == Integer){
             printf("Erro na linha %d: Repeat test nao booleano\n", node->child[1]->lineno);
+            Error = 1;
+        }
+
     }
 }
 
