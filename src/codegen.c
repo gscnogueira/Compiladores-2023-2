@@ -119,7 +119,7 @@ void gen_op_exp(TreeNode *node) {
 
 void gen_id_exp(TreeNode *node) {
 
-    int id_loc = st_lookup(node->attr.name);
+    int id_loc = symtab_lookup(node->attr.name);
 
     emitRM("LD", ac,id_loc,gp_reg);
 }
@@ -133,7 +133,7 @@ void gen_write_stmt(TreeNode *node) {
 void gen_assign_stmt(TreeNode *node) {
 
     char * id = node->attr.name;
-    int id_loc = st_lookup(id);
+    int id_loc = symtab_lookup(id);
 
     genExpression(node->child[0]);
 
@@ -143,7 +143,7 @@ void gen_assign_stmt(TreeNode *node) {
 void gen_read_stmt(TreeNode *node) {
 
     char * id = node->attr.name;
-    int id_loc = st_lookup(id);
+    int id_loc = symtab_lookup(id);
 
     emitRO("IN", ac, 0, 0);
 

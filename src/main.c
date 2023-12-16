@@ -4,23 +4,13 @@
 #include "parser.h"
 #include "symtab.h"
 #include "analyze.h"
-#include "globals.h"
 #include "codegen.h"
 #include "utils.h"
 
-extern int EchoSource;
-extern int TraceScan;
-extern int TraceParse;
-extern int TraceAnalyze;
-extern int TraceCode;
-extern int Error;
-
-
 extern FILE* yyin;
 
-FILE * listing;
 FILE * output_file;
-int TraceAnalyze = 0;
+int ShowSymTab = 0;
 int Error = 0;
 
 int main(int argc, char** argv) {
@@ -63,7 +53,7 @@ int main(int argc, char** argv) {
   /* --------------------------------------------- */
 
   /* Analise Semântica (Davi) */
-  listing = stdout;
+  
   buildSymtab(ast);
 
   typeCheck(ast);

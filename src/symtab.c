@@ -2,86 +2,83 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symtab.h"
-#include "globals.h"
 
-#define SIZE 211
+typedef struct ListaLinhasStruct
+{
+    int numeroLinha;
+    struct ListaLinhasStruct *proximo;
+} *ListaLinhas;
 
-#define SHIFT 4
+typedef struct LinhaTabelaStruct
+{
+    char *nome;
+    ListaLinhas linhas;
+    int localMem;
+} *LinhaTabela;
 
-static int hash ( char * key )
-{ int temp = 0;
-  int i = 0;
-  while (key[i] != '\0')
-  { temp = ((temp << SHIFT) + key[i]) % SIZE;
-    ++i;
-  }
-  return temp;
-}
 
-typedef struct LineListRec
-   { int lineno;
-     struct LineListRec * next;
-   } * LineList;
+static LinhaTabela Tabela[200];
+int location = 0;
 
-typedef struct BucketListRec
-   { char * name;
-     LineList lines;
-     int memloc ;
-     struct BucketListRec * next;
-   } * BucketList;
-
-static BucketList hashTable[SIZE];
-
-void st_insert( char * name, int lineno, int loc )
-{ int h = hash(name);
-  BucketList l =  hashTable[h];
-  while ((l != NULL) && (strcmp(name,l->name) != 0))
-    l = l->next;
-  if (l == NULL)
-  { l = (BucketList) malloc(sizeof(struct BucketListRec));
-    l->name = name;
-    l->lines = (LineList) malloc(sizeof(struct LineListRec));
-    l->lines->lineno = lineno;
-    l->memloc = loc;
-    l->lines->next = NULL;
-    l->next = hashTable[h];
-    hashTable[h] = l; }
-  else
-  { LineList t = l->lines;
-    while (t->next != NULL) t = t->next;
-    t->next = (LineList) malloc(sizeof(struct LineListRec));
-    t->next->lineno = lineno;
-    t->next->next = NULL;
-  }
-}
-
-int st_lookup ( char * name )
-{ int h = hash(name);
-  BucketList l =  hashTable[h];
-  while ((l != NULL) && (strcmp(name,l->name) != 0))
-    l = l->next;
-  if (l == NULL) return -1;
-  else return l->memloc;
-}
-
-void printSymTab(FILE * listing)
-{ int i;
-  fprintf(listing,"Variable Name  Location   Line Numbers\n");
-  fprintf(listing,"-------------  --------   ------------\n");
-  for (i=0;i<SIZE;++i)
-  { if (hashTable[i] != NULL)
-    { BucketList l = hashTable[i];
-      while (l != NULL)
-      { LineList t = l->lines;
-        fprintf(listing,"%-14s ",l->name);
-        fprintf(listing,"%-8d  ",l->memloc);
-        while (t != NULL)
-        { fprintf(listing,"%4d ",t->lineno);
-          t = t->next;
-        }
-        fprintf(listing,"\n");
-        l = l->next;
-      }
+void symtab_insert(char *nome, int numeroLinha)
+{
+    int i = 0;
+    while (Tabela[i] != NULL && strcmp(nome, Tabela[i]->nome) != 0)
+        i++;
+    LinhaTabela linha = Tabela[i];
+    if (linha == NULL)
+    {
+        linha = (LinhaTabela)malloc(sizeof(struct LinhaTabelaStruct));
+        linha->nome = nome;
+        linha->linhas = (ListaLinhas)malloc(sizeof(struct ListaLinhasStruct));
+        linha->linhas->numeroLinha = numeroLinha;
+        linha->localMem = location;
+        location++;
+        linha->linhas->proximo = NULL;
+        Tabela[i] = linha;
     }
-  }
+    else
+    {
+        ListaLinhas linhasVariavel = linha->linhas;
+        while (linhasVariavel->proximo != NULL)
+            linhasVariavel = linhasVariavel->proximo;
+
+        linhasVariavel->proximo = (ListaLinhas)malloc(sizeof(struct ListaLinhasStruct));
+        linhasVariavel->proximo->numeroLinha = numeroLinha;
+        linhasVariavel->proximo->proximo = NULL;
+    }
+
+}
+
+int symtab_lookup(char *nome)
+{
+    int i = 0;
+    while (Tabela[i] != NULL && strcmp(nome, Tabela[i]->nome) != 0)
+        i++;
+    LinhaTabela linha = Tabela[i];
+    if (linha == NULL)
+        return -1;
+    else
+        return linha->localMem;
+}
+
+void printSymTab()
+{
+    int i = 0;
+    printf("Nome da Variável  Local   Número das linhas\n");
+    printf("----------------  -----   -----------------\n");
+    while (Tabela[i] != NULL) {
+        LinhaTabela linha = Tabela[i];
+        ListaLinhas linhasVariavel = linha->linhas;
+        printf("%-17s ", linha->nome);
+        printf("%-4d  ", linha->localMem);
+        while (linhasVariavel != NULL)
+        {
+            printf("%4d ", linhasVariavel->numeroLinha);
+            linhasVariavel = linhasVariavel->proximo;
+        }
+        printf("\n");
+        i++;
+    }
+    
 }

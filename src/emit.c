@@ -34,7 +34,7 @@ void emitRM(char* op, int reg_r, int reg_d, int reg_s){
 }
 
 void emitComment(char* comment){
-    if (TraceAnalyze) {fprintf(output_file, "*%s\n", comment);}
+    if (ShowSymTab) {fprintf(output_file, "*%s\n", comment);}
 }
 
 int emitSkip(int num) {

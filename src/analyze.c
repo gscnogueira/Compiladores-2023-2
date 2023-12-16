@@ -3,125 +3,84 @@
 #include <string.h>
 #include "ast.h"
 #include "symtab.h"
-#include "analyze.h"
 #include "globals.h"
+#include "analyze.h"
 
-extern FILE* listing;
 static int location = 0;
 
-static void traverse( TreeNode * t,
-               void (* preProc) (TreeNode *),
-               void (* postProc) (TreeNode *) )
-{ if (t != NULL)
-  { preProc(t);
-    { int i;
-      for (i=0; i < MAXCHILDREN; i++)
-        traverse(t->child[i],preProc,postProc);
+static void traverse(TreeNode * node, void (* preProc) (TreeNode *), void (* postProc) (TreeNode *) )
+{ if (node != NULL) {
+    preProc(node);
+    for (int i=0; i < MAXCHILDREN; i++) {
+        traverse(node->child[i], preProc, postProc);
     }
-    postProc(t);
-    traverse(t->sibling,preProc,postProc);
+    postProc(node);
+    traverse(node->sibling, preProc, postProc);
   }
 }
 
-static void nullProc(TreeNode * t)
-{ if (t==NULL) return;
-  else return;
+static void emptyFunc(TreeNode * node)
+{}
+
+static void insertNode(TreeNode * node)
+{
+    if ((node->nodekind == StmtK) && (node->kind.stmt == AssignK || node->kind.stmt == ReadK))
+        symtab_insert(node->attr.name, node->lineno);
+    
+    else if ((node->nodekind == ExpK) && (node->kind.exp == IdK && symtab_lookup(node->attr.name) != -1)) 
+        symtab_insert(node->attr.name, node->lineno);
 }
 
-static void insertNode( TreeNode * t)
-{ switch (t->nodekind)
-  { case StmtK:
-      switch (t->kind.stmt)
-      { case AssignK:
-        case ReadK:
-          if (st_lookup(t->attr.name) == -1)
-            st_insert(t->attr.name,t->lineno,location++);
-          else
-            st_insert(t->attr.name,t->lineno,0);
-          break;
-        default:
-          break;
-      }
-      break;
-    case ExpK:
-      switch (t->kind.exp)
-      { case IdK:
-          if (st_lookup(t->attr.name) == -1)
-            st_insert(t->attr.name,t->lineno,location++);
-          else
-            st_insert(t->attr.name,t->lineno,0);
-          break;
-        default:
-          break;
-      }
-      break;
-    default:
-      break;
-  }
-}
 
 void buildSymtab(TreeNode * syntaxTree)
-{ traverse(syntaxTree,insertNode,nullProc);
-  if (TraceAnalyze)
-  { fprintf(listing,"\nSymbol table:\n\n");
-    printSymTab(listing);
+{ traverse(syntaxTree, insertNode, emptyFunc);
+  if (ShowSymTab)
+  { printf("\nTabela de símbolos:\n\n");
+    printSymTab();
   }
 }
 
-static void typeError(TreeNode * t, char * message)
-{ fprintf(listing,"Type error at line %d: %s\n",t->lineno,message);
-  Error = 1;
+static void checkNode(TreeNode *node)
+{
+    if (node->nodekind == ExpK)
+    {
+        if (node->kind.exp == OpK)
+        {
+            if ((node->child[0]->type != Integer) ||
+                (node->child[1]->type != Integer))
+                printf("Erro na linha %d: Op aplicada a nao inteiro\n", node->lineno);
+
+            if ((node->attr.op == Eq) || (node->attr.op == Lt))
+                node->type = Boolean;
+            else
+                node->type = Integer;
+        }
+        else if (node->kind.exp == IdK && symtab_lookup(node->attr.name) == -1)
+        {
+            printf("Erro na linha %d: Variavel %s utilizada porem nao declarada\n", node->lineno, node->attr.name);
+            node->type = Integer;
+        }
+    }
+    else if (node->nodekind == StmtK)
+    {
+        if (node->kind.stmt == IfK && node->child[0]->type == Integer)
+            printf("Erro na linha %d: Teste if nao booleano\n", node->child[0]->lineno);
+
+        else if (node->kind.stmt == AssignK && node->child[0]->type != Integer)
+            printf("Erro na linha %d: Assignment de valor nao inteiro\n", node->child[0]->lineno);
+
+        else if (node->kind.stmt == WriteK && node->child[0]->type != Integer)
+            printf("Erro na linha %d: Write de valor nao inteiro\n", node->child[0]->lineno);
+
+        else if (node->kind.stmt == RepeatK && node->child[1]->type == Integer)
+            printf("Erro na linha %d: Repeat test nao booleano\n", node->child[1]->lineno);
+    }
 }
 
-static void checkNode(TreeNode * t)
-{ switch (t->nodekind)
-  { case ExpK:
-      switch (t->kind.exp)
-      { case OpK:
-          if ((t->child[0]->type != Integer) ||
-              (t->child[1]->type != Integer))
-            typeError(t,"Op applied to non-integer");
-          if ((t->attr.op == Eq) || (t->attr.op == Lt))
-            t->type = Boolean;
-          else
-            t->type = Integer;
-          break;
-        case ConstK:
-        case IdK:
-          t->type = Integer;
-          break;
-        default:
-          break;
-      }
-      break;
-    case StmtK:
-      switch (t->kind.stmt)
-      { case IfK:
-          if (t->child[0]->type == Integer)
-            typeError(t->child[0],"if test is not Boolean");
-          break;
-        case AssignK:
-          if (t->child[0]->type != Integer)
-            typeError(t->child[0],"assignment of non-integer value");
-          break;
-        case WriteK:
-          if (t->child[0]->type != Integer)
-            typeError(t->child[0],"write of non-integer value");
-          break;
-        case RepeatK:
-          if (t->child[1]->type == Integer)
-            typeError(t->child[1],"repeat test is not Boolean");
-          break;
-        default:
-          break;
-      }
-      break;
-    default:
-      break;
 
-  }
-}
+
+
 
 void typeCheck(TreeNode * syntaxTree)
-{ traverse(syntaxTree,nullProc,checkNode);
+{ traverse(syntaxTree, emptyFunc, checkNode);
 }

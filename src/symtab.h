@@ -1,10 +1,10 @@
 #ifndef _SYMTAB_H_
 #define _SYMTAB_H_
 
-void st_insert( char * name, int lineno, int loc );
+void symtab_insert( char * nome, int numeroLinha);
 
-int st_lookup ( char * name );
+int symtab_lookup ( char * nome );
 
-void printSymTab(FILE * listing);
+void printSymTab();
 
 #endif
