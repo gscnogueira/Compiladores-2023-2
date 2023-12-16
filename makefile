@@ -11,6 +11,6 @@ tiny_machine: tiny_machine.c
 	gcc -o tiny_machine tiny_machine.c
 
 clear:
-	rm *.c
+	rm *.tm tiny_machine tiny
 
 
